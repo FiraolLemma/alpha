@@ -1,77 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Contact - View Submissions</title>
-  <style>
-    .hidden { display: none; }
-    .submission { 
-      background: #f5f5f5; 
-      padding: 15px; 
-      margin: 10px 0; 
-      border-radius: 5px;
-    }
-    #admin-panel { margin: 30px auto; max-width: 800px; }
-  </style>
-</head>
-<body>
-
-<!-- Success Message -->
+<div id="submissions"></div>
 <script>
-  if (new URLSearchParams(window.location.search).has('submission=success')) {
-    document.write(`
-      <div class="success-banner" style="background:#4CAF50;color:white;padding:15px;">
-        Thank you! Your submission was received.
-      </div>
-    `);
-  }
-</script>
-
-<!-- Admin Panel (Hidden by default) -->
-<div id="admin-panel" class="hidden">
-  <h2>Form Submissions</h2>
-  <input type="password" id="admin-pw" placeholder="Enter admin password">
-  <button onclick="loadSubmissions()">View Submissions</button>
-  
-  <div id="submissions-container"></div>
-</div>
-
-<script>
-// Show admin panel if URL has secret key
-if (location.search.includes('admin=SECRET123')) {
-  document.getElementById('admin-panel').classList.remove('hidden');
-}
-
-async function loadSubmissions() {
-  const pw = document.getElementById('admin-pw').value;
-  if (!pw) return alert("Password required");
-  
-  try {
-    const response = await fetch('/.netlify/functions/get-submissions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: pw })
+fetch('/.netlify/functions/get-submissions')
+  .then(res => res.json())
+  .then(data => {
+    const container = document.createElement('div');
+    data.forEach(entry => {
+      const div = document.createElement('div');
+      div.innerHTML = `
+        <h4>${entry.data.name}</h4>
+        <p>Email: ${entry.data.email}</p>
+        <p>Phone: ${entry.data.phone}</p>
+        <hr>`;
+      container.appendChild(div);
     });
-    
-    const data = await response.json();
-    displaySubmissions(data);
-  } catch (error) {
-    console.error("Fetch error:", error);
-    alert("Error loading submissions");
-  }
-}
-
-function displaySubmissions(submissions) {
-  const container = document.getElementById('submissions-container');
-  container.innerHTML = submissions.map(sub => `
-    <div class="submission">
-      <h3>${sub.data.name || 'No name'}</h3>
-      <p><strong>Email:</strong> ${sub.data.email}</p>
-      <p><strong>Phone:</strong> ${sub.data.phone || 'N/A'}</p>
-      <p><small>Submitted: ${new Date(sub.created_at).toLocaleString()}</small></p>
-    </div>
-  `).join('');
-}
+    document.body.appendChild(container);
+  })
+  .catch(err => {
+    console.error('Failed to load submissions', err);
+  });
 </script>
-
-</body>
-</html>

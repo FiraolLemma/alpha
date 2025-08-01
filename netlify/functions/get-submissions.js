@@ -1,15 +1,20 @@
-exports.handler = async (event) => {
-  const { password } = JSON.parse(event.body);
-  
-  // Verify password (store this in environment variables!)
-  if (password !== process.env.ADMIN_PW) {
-    return { statusCode: 401, body: "Unauthorized" };
+// This function uses Netlify API to fetch form submissions
+exports.handler = async function(event, context) {
+  const NETLIFY_TOKEN = process.env.API_AUTH_TOKEN;
+
+  const formName = "registration";
+  const res = await fetch(`https://api.netlify.com/api/v1/forms?access_token=${NETLIFY_TOKEN}`);
+  const forms = await res.json();
+  const form = forms.find(f => f.name === formName);
+  if (!form) {
+    return { statusCode: 404, body: "Form not found" };
   }
-  
-  const response = await fetch(
-    `https://api.netlify.com/api/v1/sites/${process.env.SITE_ID}/submissions`,
-    { headers: { Authorization: `Bearer ${process.env.API_AUTH_TOKEN}` } }
-  );
-  
-  return { statusCode: 200, body: JSON.stringify(await response.json()) };
+
+  const submissionsRes = await fetch(`https://api.netlify.com/api/v1/forms/${form.id}/submissions?access_token=${NETLIFY_TOKEN}`);
+  const submissions = await submissionsRes.json();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(submissions)
+  };
 };
