@@ -1,2 +1,46 @@
-<form name="registration" method="POST" data-netlify="true" action="/contact.html" id="registration-form">
-</form>
+<!-- alpha/contact.html -->
+<div id="admin-view" style="display: none;">
+  <h2>Form Submissions</h2>
+  <input type="password" id="admin-password" placeholder="Enter admin password">
+  <button onclick="fetchSubmissions()">View Submissions</button>
+  <div id="submissions-list"></div>
+</div>
+
+<script>
+if (location.search.includes('submission=success')) {
+  document.body.innerHTML += `
+    <div class="success-banner">
+      Form submitted successfully! We'll contact you soon.
+    </div>
+  `;
+}
+</script>
+<script>
+// Only show admin panel if URL has secret parameter
+if (location.search.includes('admin=secret_key')) {
+  document.getElementById('admin-view').style.display = 'block';
+}
+
+async function fetchSubmissions() {
+  const password = document.getElementById('admin-password').value;
+  const response = await fetch('/.netlify/functions/get-submissions', {
+    method: 'POST',
+    body: JSON.stringify({ password })
+  });
+  
+  if (response.ok) {
+    const submissions = await response.json();
+    const list = document.getElementById('submissions-list');
+    list.innerHTML = submissions.map(sub => `
+      <div class="submission">
+        <p><strong>Name:</strong> ${sub.data.name}</p>
+        <p><strong>Email:</strong> ${sub.data.email}</p>
+        <p><strong>Submitted:</strong> ${new Date(sub.created_at).toLocaleString()}</p>
+        <hr>
+      </div>
+    `).join('');
+  } else {
+    alert('Error fetching submissions');
+  }
+}
+</script>
