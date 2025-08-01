@@ -173,6 +173,7 @@ header.scrolled {
   height: 60px;
   width: fit-content;
   transition: var(--transition);
+  border-radius: 30px;
 }
 
 nav ul {
@@ -472,6 +473,18 @@ video {
   background: linear-gradient(135deg, #28A745 0%, #5CB85C 100%);
 }
 
+.package-header.yellow {
+  background: linear-gradient(135deg, #FFC107 0%, #FFCA2C 100%);
+}
+
+.package-header.blue {
+  background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+}
+
+.package-header.orange {
+  background: linear-gradient(135deg, #FF5722 0%, #FF8A65 100%);
+}
+
 .package-header h3 {
   position: relative;
   font-size: 1.8rem;
@@ -480,13 +493,42 @@ video {
 }
 
 .package-body {
-  padding: 30px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.package-image {
+    width: 100%;
+    height: 100%; 
+    margin-bottom: 20px;
+}
+
+.package-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+}
+
+.package-card:hover .package-image img {
+    transform: scale(1.1);
 }
 
 .package-body p {
   margin-bottom: 25px;
   font-size: 1.1rem;
   line-height: 1.6;
+  flex-grow: 1;
+}
+
+.package-card:hover .package-image img {
+    transform: scale(1.1) rotate(5deg);
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
 }
 
 /* Products Section */
@@ -539,7 +581,7 @@ video {
 .audio-testimonials {
   margin-top: 80px;
   text-align: center;
-  background: var(--white);
+  background: linear-gradient(130deg , rgba(255, 217, 0, 0.966), rgba(212, 175, 55, 0.808), rgba(128, 128, 128, 0.788), rgba(0, 0, 0, 0.76)), url('../images/packages.jpg') no-repeat center center/cover;
   padding: 40px;
   border-radius: 15px;
   box-shadow: var(--box-shadow);
