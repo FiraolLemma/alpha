@@ -1,4 +1,4 @@
-// Language switcher functionality
+// alpha/assets/js/language-switcher.js
 function changeLanguage(lang) {
   // Load the language file
   fetch(`languages/${lang}.json`)
