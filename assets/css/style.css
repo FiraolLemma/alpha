@@ -124,7 +124,7 @@ img {
 
 .section-title {
   font-size: 2.8rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   text-align: center;
   font-family: var(--font-secondary);
   color: var(--golden-dark);
@@ -148,20 +148,20 @@ img {
 
 /* Header Styles */
 header {
-  background-color: rgba(255, 255, 255, 0.98);
+  background: linear-gradient(to bottom, rgb(112, 70, 7), rgba(255, 255, 255, 0.404), rgba(255, 255, 255, 0.192));
   box-shadow: var(--box-shadow);
   position: fixed;
   width: 100%;
   top: 0;
   z-index: 1000;
-  padding: 20px 0;
+  padding: 10px 0;
   transition: var(--transition);
   backdrop-filter: blur(10px);
 }
 
 header.scrolled {
   padding: 15px 0;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 15px 20px rgba(0, 0, 0, 0.712);
 }
 
 .logo {
@@ -209,9 +209,10 @@ nav ul li a:hover {
 
 .mobile-menu {
   display: none;
-  font-size: 1.8rem;
+  font-size: 2.3rem;
+  font-weight: 600;
   cursor: pointer;
-  color: var(--dark);
+  color: white;
 }
 
 /* Language Switcher */
@@ -249,7 +250,7 @@ nav ul li a:hover {
 
 /* Hero Section */
 .hero {
-  padding: 180px 0 100px;
+  padding: 100px 0 10px;
   background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../images/hero-bg.jpg') no-repeat center center/cover;
   color: var(--white);
   position: relative;
@@ -925,7 +926,15 @@ footer::before {
     flex-direction: column;
     gap: 20px;
   }
+  nav ul li a {
+    font-size: 1.2rem;
+    padding: 10px 0;
+    border-bottom: 1.5px solid rgba(0, 0, 0, 0.404);
+  }
   
+  nav ul li a :hover {
+    color: var(--golden-dark);
+  }
   .language-switcher {
     top: 100px;
     flex-direction: row;
